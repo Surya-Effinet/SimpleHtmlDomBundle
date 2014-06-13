@@ -1458,7 +1458,9 @@ class simple_html_dom
 				if ($this->lowercase) $name = strtolower($name);
 				if ($this->char==='=') {
 					$this->char = (++$this->pos<$this->size) ? $this->doc[$this->pos] : null; // next
-					$this->parse_attr($node, $name, $space);
+                                        if (false === $this->parse_attr($node, $name, $space)) {
+                                            continue;
+                                        }
 				}
 				else {
 					//no value attr: nowrap, checked selected...
@@ -1507,7 +1509,7 @@ class simple_html_dom
 		// If the attribute is already defined inside a tag, only pay atetntion to the first one as opposed to the last one.
 		if (isset($node->attr[$name]))
 		{
-			return;
+			return false;
 		}
 
 		$space[2] = $this->copy_skip($this->token_blank);
